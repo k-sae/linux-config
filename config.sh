@@ -28,11 +28,6 @@ sudo apt-add-repository ppa:tista/adapta -y
 sudo apt update  
 sudo apt -y install adapta-gtk-theme  
 
-# right click on two fingers
-synclient "TapButton2"=3
-
-# left click on one finger tabing
-synclient "TapButton1"=1
 
 # natural scrolling
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
