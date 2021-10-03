@@ -64,7 +64,7 @@ if [ $input = "y" ]; then
 	# for contrling synaptic touch-pad
 	sudo apt-get -y install synaptic
 
-
+	sudo apt -y install pavucontrol
 	# well, installing the actual i3 at last
 	sudo apt install i3 -y
 	
@@ -99,9 +99,9 @@ echo "WARNING: this feature is intended for ubuntu 18.10"
 echo "would u like to continue? (y)"
 read input
 if [ $input = "y" ]; then
-	cp extensions/SetAsWallpaper $HOME/.local/share/nautilus/scripts/
+	cp extensions/ubuntu_gnome/SetAsWallpaper $HOME/.local/share/nautilus/scripts/
 	sudo chmod +x $HOME/.local/share/nautilus/scripts/SetAsWallpaper
-	sudo cp themes/gdm3.css /etc/alternatives/gdm3.css
+	sudo cp themes/ubuntu.css /etc/alternatives/gdm3.css
 else
 	echo "aborted..."
 fi
@@ -110,8 +110,6 @@ fi
 # echo "adding Right shift toggle to bindings"
 # sudo echo "  grp:rctrl_rshift_toggle Right Ctrl+Right Shift" >> /usr/share/X11/xkb/rules/evdev.lst 
 
-x-www-browser https://launchpad.net/~noobslab/+archive/ubuntu/deepin-sc 
-x-www-browser https://github.com/linuxdeepin/deepin-movie 
 x-www-browser https://www.gnome-look.org/ 
 
 echo 'finished ^^'

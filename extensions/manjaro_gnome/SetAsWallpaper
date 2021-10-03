@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cp "`pwd`/$1" ~/Pictures/Wallpapers/background.jpg
+gsettings set org.gnome.desktop.background picture-uri file:///$HOME/Pictures/Wallpapers/background.jpg
+gsettings set org.gnome.desktop.screensaver picture-uri file:///$HOME/Pictures/Wallpapers/background.jpg
+nitrogen ~/Pictures/Wallpapers/background.jpg --set-auto --save
+# Make your wallpaper blurry
+convert -blur 0x25 "`pwd`"/$1 $HOME/shell-theme/theme/wallpaper
+# Copy wallpaper in system directory for gdm3 lockscreen 
+# cd $HOME/shell-theme/theme && glib-compile-resources gnome-shell-theme.gresource.xml && pkexec cp $HOME/shell-theme/theme/gnome-shell-theme.gresource /usr/share/gnome-shell
+
+
+
