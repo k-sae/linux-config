@@ -8,13 +8,21 @@ gsettings set org.gnome.shell.keybindings switch-to-application-5 "[]"
 gsettings set org.gnome.shell.keybindings switch-to-application-6 "[]"
 gsettings set org.gnome.shell.keybindings toggle-overview "['<Shift><Super>d']"
 
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Super><Shift>1']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Super><Shift>2']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Super><Shift>3']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Super><Shift>4']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 "['<Super><Shift>5']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 "['<Super><Shift>6']"
+
+gsettings set org.gnome.desktop.wm.keybindings close "['<Super><Shift>q']"
+
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
-gsettings set org.gnome.desktop.wm.keybindings close "['<Super><Shift>q']"
 
 # natural scrolling
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
