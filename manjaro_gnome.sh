@@ -30,7 +30,7 @@ gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 # no desktop icons
 gsettings set org.gnome.desktop.background show-desktop-icons false
 
-sudo pacman -S --noconfirm nemo
+# sudo pacman -S --noconfirm nemo
 sudo pacman -S --noconfirm gnome-disk-utility
 sudo pacman -S --noconfirm yay
 sudo pacman -S --noconfirm java-openjfx
@@ -40,8 +40,8 @@ sudo pacman -S --noconfirm menu-cache-git
 sudo pacman -S --noconfirm network-manager-applet
 
 # kvm support for android emulators
-sudo pacman -S --noconfirm virt-manager qemu vde2 ebtables dnsmasq bridge-utils openbsd-netcat
-sudo systemctl enable libvirtd.service
+# sudo pacman -S --noconfirm virt-manager qemu vde2 ebtables dnsmasq bridge-utils openbsd-netcat
+# sudo systemctl enable libvirtd.service
 
 # remove the pip sound
 rmmod pcspkr
@@ -134,3 +134,6 @@ yay -S google-chrome
 
 # For Swap file
 # https://askubuntu.com/questions/103242/is-it-safe-to-turn-swap-off-permanently
+
+# Install kernel headers for building modules for wifi drivers
+sudo pacman -S $(ls /boot | awk -F “-” ‘/^linux/ { print $1"-headers" }’)
