@@ -1,9 +1,32 @@
 # /usr/share/X11/xkb/symbols/ara <- arabic layout location
+
 gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<alt>Shift_R']"
+gsettings set org.gnome.shell.keybindings switch-to-application-1 "[]"
+gsettings set org.gnome.shell.keybindings switch-to-application-2 "[]"
+gsettings set org.gnome.shell.keybindings switch-to-application-3 "[]"
+gsettings set org.gnome.shell.keybindings switch-to-application-4 "[]"
+gsettings set org.gnome.shell.keybindings switch-to-application-5 "[]"
+gsettings set org.gnome.shell.keybindings switch-to-application-6 "[]"
+gsettings set org.gnome.shell.keybindings toggle-overview "['<Shift><Super>d']"
 
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Super><Shift>1']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Super><Shift>2']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Super><Shift>3']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Super><Shift>4']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 "['<Super><Shift>5']"
+gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 "['<Super><Shift>6']"
 
-echo "installing nemo...."
-sudo apt-get -y install nemo
+gsettings set org.gnome.desktop.wm.keybindings close "['<Super><Shift>q']"
+
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
+gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
+
+gsettings set org.gnome.shell.extensions.desktop-icons show-home false
+gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
 
 echo "installing vlc...."
 sudo apt-get -y install vlc
@@ -11,24 +34,14 @@ sudo apt-get -y install vlc
 echo "installing Git...."
 sudo apt-get -y install git
 
-echo "installing JDK...."
-sudo apt -y install openjdk-8-jdk
-sudo apt -y install openjfx
-
 echo "installing grub-customizer...."
 sudo add-apt-repository ppa:danielrichter2007/grub-customizer -y
 sudo apt-get update
 sudo apt-get -y install grub-customizer
 
 echo "installing tweak tools"
-sudo apt install gnome-tweak-tool -y
 
-echo "installing themes...."
-sudo apt-add-repository ppa:tista/adapta -y  
-sudo apt update  
-sudo apt -y install adapta-gtk-theme  
-
-
+sudo apt install gnome-tweaks -y
 # natural scrolling
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 
@@ -39,6 +52,11 @@ echo "installing thumpnailers...."
 sudo apt-get -y install ffmpegthumbnailer
 sudo apt-get -y install ffmpegthumbs
 sudo apt install gstreamer1.0-libavQ
+
+echo "installing flathub..."
+sudo apt install flatpak
+sudo apt install gnome-software-plugin-flatpak
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 echo "-----------------------------------------"
 echo "Hello u there ^^"
@@ -86,30 +104,17 @@ else
 	echo "aborting..."
 fi
 
-# override gnome large title bar padding
-mkdir $HOME/.config/gtk-3.0/
-cp themes/gtk.css $HOME/.config/gtk-3.0/gtk.css
+
+sudo apt-get install chrome-gnome-shell
 
 echo "removing default ubuntu sidebar"
 sudo mv /usr/share/gnome-shell/extensions/ubuntu-dock@ubuntu.com ~/
 
 
-echo "adding setAswallpaper script"
-echo "WARNING: this feature is intended for ubuntu 18.10"
-echo "would u like to continue? (y)"
-read input
-if [ $input = "y" ]; then
-	cp extensions/ubuntu_gnome/SetAsWallpaper $HOME/.local/share/nautilus/scripts/
-	sudo chmod +x $HOME/.local/share/nautilus/scripts/SetAsWallpaper
-	sudo cp themes/ubuntu.css /etc/alternatives/gdm3.css
-else
-	echo "aborted..."
-fi
-
 
 # echo "adding Right shift toggle to bindings"
 # sudo echo "  grp:rctrl_rshift_toggle Right Ctrl+Right Shift" >> /usr/share/X11/xkb/rules/evdev.lst 
-
+x
 x-www-browser https://www.gnome-look.org/ 
 
 echo 'finished ^^'
