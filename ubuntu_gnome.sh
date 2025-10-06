@@ -31,6 +31,18 @@ gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
 echo "installing vlc...."
 sudo apt-get -y install vlc
 
+echo "installing CURL..."
+sudo apt  install curl
+
+echo "installing git..."
+sudo apt  install git
+
+echo "bluetooth discovery..."
+sudo apt install chntpw
+
+echo "Installing Brave...."
+sudo curl -fsS https://dl.brave.com/install.sh | sh
+
 echo "installing Git...."
 sudo apt-get -y install git
 
@@ -39,9 +51,13 @@ sudo add-apt-repository ppa:danielrichter2007/grub-customizer -y
 sudo apt-get update
 sudo apt-get -y install grub-customizer
 
-echo "installing tweak tools"
-
+echo "installing tweak tools..."
 sudo apt install gnome-tweaks -y
+sudo apt install gnome-shell-extension-manager -y
+
+echo "installing flameshot..."
+sudo apt install flameshot
+
 # natural scrolling
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 
@@ -54,9 +70,9 @@ sudo apt-get -y install ffmpegthumbs
 sudo apt install gstreamer1.0-libavQ
 
 echo "installing flathub..."
-sudo apt install flatpak
-sudo apt install gnome-software-plugin-flatpak
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+sudo apt install flatpak -y
+sudo apt install gnome-software-plugin-flatpak -y
+sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 echo "-----------------------------------------"
 echo "Hello u there ^^"
@@ -104,7 +120,19 @@ else
 	echo "aborting..."
 fi
 
-
+echo "-----------------------------------------"
+echo "Hello u there ^^"
+echo "would u like to install and add config for i3wm ? (y)"
+read zsh_in
+if [ $input = "y" ]; then
+	sudo apt install zsh -y
+	chsh -s $(which zsh)
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	source $HOME/.zshrc
+	    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+else
+	echo "aborting..."
+fi
 sudo apt-get install chrome-gnome-shell
 
 echo "removing default ubuntu sidebar"
@@ -114,8 +142,21 @@ sudo mv /usr/share/gnome-shell/extensions/ubuntu-dock@ubuntu.com ~/
 
 # echo "adding Right shift toggle to bindings"
 # sudo echo "  grp:rctrl_rshift_toggle Right Ctrl+Right Shift" >> /usr/share/X11/xkb/rules/evdev.lst 
-x
 x-www-browser https://www.gnome-look.org/ 
 
 echo 'finished ^^'
 echo 'Bonus note: user "nohup" for redirecting output"
+
+
+## find which device name
+# sudo lsusb -t | grep rtw_8821cu
+## ls /sys/bus/usb/devices/{bus_id}-{device_id}/
+# ls /sys/bus/usb/devices/3-1/
+
+##echo '{bus_id}-{device_id}:{port_id}.{condition_id}' | sudo tee /sys/bus/usb/drivers/btusb/unbind
+# echo '3-1:1.0' | sudo tee /sys/bus/usb/drivers/btusb/unbind
+
+# sudo nano /etc/udev/rules.d/90-disable-bluetooth.rules
+# add sleep sothat driver boots up
+# ACTION=="add", SUBSYSTEM=="usb", RUN+="/bin/sh -c 'sleep 5 && echo -n 3-1:1.0 > /sys/bus/usb/drivers/btusb/unbind'"
+# https://github.com/x2es/bt-dualboot

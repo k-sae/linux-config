@@ -1,0 +1,8 @@
+/bluetooth-6.14/
+
+**MOK.priv
+**MOK.der
+
+sudo openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv \
+    -outform DER -out MOK.der -nodes -days 3650 \
+    -subj "/CN=My Secure Boot DKMS key/"
