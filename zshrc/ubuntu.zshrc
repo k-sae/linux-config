@@ -5,7 +5,7 @@ ZSH_THEME="robbyrussell"
 plugins=(git docker nvm zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.local/go/bin:$HOME/go/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
