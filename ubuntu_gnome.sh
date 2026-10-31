@@ -186,6 +186,22 @@ for uuid in $EXTENSIONS; do
 	gsettings set org.gnome.shell enabled-extensions "$enabled"
 done
 
+step "flat remix gtk theme (red/blue, light/darkest; red light enabled)..."
+mkdir -p "$HOME/.themes"
+for theme in "$REPO_DIR"/themes/flat-remix/Flat-Remix-GTK-*; do
+	rm -rf "$HOME/.themes/$(basename "$theme")"
+	cp -a "$theme" "$HOME/.themes/"
+done
+THEME=Flat-Remix-GTK-Red-Light
+gsettings set org.gnome.desktop.interface gtk-theme "$THEME"
+# nautilus and the other gtk4/libadwaita apps ignore gtk-theme: they read ~/.config/gtk-4.0
+# and the accent color (red/blue matches the theme, use color-scheme prefer-dark for darkest)
+mkdir -p "$HOME/.config/gtk-4.0"
+rm -rf "$HOME/.config/gtk-4.0/assets"
+cp -a "$HOME/.themes/$THEME/libadwaita/." "$HOME/.config/gtk-4.0/"
+gsettings set org.gnome.desktop.interface accent-color red
+gsettings set org.gnome.desktop.interface color-scheme default
+
 step "nautilus 'SetAsWallpaper' script..."
 mkdir -p "$HOME/.local/share/nautilus/scripts"
 cp "$REPO_DIR/extensions/ubuntu_gnome/SetAsWallpaper" "$HOME/.local/share/nautilus/scripts/"
