@@ -202,6 +202,18 @@ cp -a "$HOME/.themes/$THEME/libadwaita/." "$HOME/.config/gtk-4.0/"
 gsettings set org.gnome.desktop.interface accent-color red
 gsettings set org.gnome.desktop.interface color-scheme default
 
+step "sweet themes, candy icons and sweet folders (installed, not enabled)..."
+for theme in "$REPO_DIR"/themes/sweet/Sweet-*; do
+	rm -rf "$HOME/.themes/$(basename "$theme")"
+	cp -a "$theme" "$HOME/.themes/"
+done
+# the Sweet-* folder themes only hold folders and inherit candy-icons for the rest
+mkdir -p "$HOME/.local/share/icons"
+for icons in "$REPO_DIR"/icons/candy-icons "$REPO_DIR"/icons/sweet-folders/Sweet-*; do
+	rm -rf "$HOME/.local/share/icons/$(basename "$icons")"
+	cp -a "$icons" "$HOME/.local/share/icons/"
+done
+
 step "nautilus 'SetAsWallpaper' script..."
 mkdir -p "$HOME/.local/share/nautilus/scripts"
 cp "$REPO_DIR/extensions/ubuntu_gnome/SetAsWallpaper" "$HOME/.local/share/nautilus/scripts/"
