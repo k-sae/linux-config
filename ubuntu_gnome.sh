@@ -163,10 +163,33 @@ gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
 gnome-extensions disable ubuntu-dock@ubuntu.com || true
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 
+step "gnome extensions (load after re-login)..."
+# builds from extensions.gnome.org matching this gnome-shell; color-picker is installed but left off
+GNOME_VER="$(gnome-shell --version | grep -oE '[0-9]+' | head -1)"
+EXTENSIONS="blur-my-shell@aunetx caffeine@patapon.info color-picker@tuberry dash-to-dock@micxgx.gmail.com
+	hidetopbar@mathieu.bidon.ca rounded-window-corners@fxgn user-theme@gnome-shell-extensions.gcampax.github.com"
+EXT_TMP="$(mktemp -d)"
+for uuid in $EXTENSIONS; do
+	if [ -d "$HOME/.local/share/gnome-shell/extensions/$uuid" ]; then continue; fi
+	url="$(curl -fsS "https://extensions.gnome.org/extension-info/?uuid=$uuid&shell_version=$GNOME_VER" | jq -r '.download_url // empty')" || url=""
+	if [ -z "$url" ]; then echo "no gnome $GNOME_VER build of $uuid, skipped"; continue; fi
+	curl -fsSL -o "$EXT_TMP/$uuid.zip" "https://extensions.gnome.org$url"
+	gnome-extensions install --force "$EXT_TMP/$uuid.zip"
+done
+rm -rf "$EXT_TMP"
+# gsettings instead of `gnome-extensions enable`: the running shell can't see new extensions until re-login
+for uuid in $EXTENSIONS; do
+	if [ "$uuid" = color-picker@tuberry ]; then continue; fi
+	enabled="$(gsettings get org.gnome.shell enabled-extensions)"
+	case "$enabled" in *"'$uuid'"*) continue ;; esac
+	if [ "$enabled" = "@as []" ]; then enabled="['$uuid']"; else enabled="${enabled%]}, '$uuid']"; fi
+	gsettings set org.gnome.shell enabled-extensions "$enabled"
+done
+
 step "nautilus 'SetAsWallpaper' script..."
 mkdir -p "$HOME/.local/share/nautilus/scripts"
 cp "$REPO_DIR/extensions/ubuntu_gnome/SetAsWallpaper" "$HOME/.local/share/nautilus/scripts/"
 chmod +x "$HOME/.local/share/nautilus/scripts/SetAsWallpaper"
 
 echo
-echo 'finished ^^  log out and back in for zsh, docker group and the keyboard layout to apply'
+echo 'finished ^^  log out and back in for zsh, docker group, keyboard layout and gnome extensions to apply'
