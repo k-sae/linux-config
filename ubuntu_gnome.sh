@@ -169,7 +169,9 @@ add_shortcut() {
 	gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "$list"
 }
 add_shortcut ghostty Ghostty ghostty '<Super>Return'
-add_shortcut flameshot 'Flameshot screenshot' 'flameshot gui' '<Control><Shift>Print'
+# flameshot through xwayland: qt6 on gnome 50 wayland leaves a ~30s busy cursor after each capture
+# (flameshot-org/flameshot#4793, launchpad #2171391); go back to plain `flameshot gui` once fixed
+add_shortcut flameshot 'Flameshot screenshot' 'env QT_QPA_PLATFORM=xcb flameshot gui' '<Control><Shift>Print'
 
 step "desktop, dock, touchpad..."
 gsettings set org.gnome.shell.extensions.ding show-home false
