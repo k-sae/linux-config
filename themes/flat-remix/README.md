@@ -3,7 +3,9 @@ copied from https://github.com/daniruiz/flat-remix-gtk at commit 919494f (releas
 ubuntu_gnome.sh installs them to ~/.themes and enables Flat-Remix-GTK-Red-Light.
 
 To switch variant (e.g. Blue-Darkest):
-  cp -a ~/.themes/Flat-Remix-GTK-Blue-Darkest/libadwaita/. ~/.config/gtk-4.0/   # nautilus / gtk4 apps
+  for f in gtk.css gtk-dark.css assets; do                                      # nautilus / gtk4 apps
+    ln -sfn ~/.themes/Flat-Remix-GTK-Blue-Darkest/gtk-4.0/$f ~/.config/gtk-4.0/$f
+  done
   gsettings set org.gnome.desktop.interface gtk-theme Flat-Remix-GTK-Blue-Darkest
   gsettings set org.gnome.desktop.interface accent-color blue
   gsettings set org.gnome.desktop.interface color-scheme prefer-dark             # 'default' for light

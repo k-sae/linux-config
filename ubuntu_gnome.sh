@@ -67,7 +67,7 @@ sudo apt-get -y install \
 	flameshot imagemagick \
 	ffmpegthumbnailer gstreamer1.0-libav `# thumbnails + codecs` \
 	flatpak gnome-software-plugin-flatpak \
-	zsh \
+	zsh ghostty \
 	build-essential gh python3-pip python3-venv \
 	code \
 	docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -155,6 +155,22 @@ step "windows..."
 gsettings set org.gnome.desktop.wm.keybindings close "['<Super><Shift>q']"
 gsettings set org.gnome.shell.keybindings toggle-overview "['<Shift><Super>d']"
 
+step "custom shortcuts (Super+Enter ghostty, Ctrl+Shift+Print flameshot)..."
+# usage: add_shortcut <id> <name> <command> <binding>; re-running updates it in place
+add_shortcut() {
+	local list kb_path="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/$1/"
+	local schema="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$kb_path"
+	gsettings set "$schema" name "$2"
+	gsettings set "$schema" command "$3"
+	gsettings set "$schema" binding "$4"
+	list="$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings)"
+	case "$list" in *"'$kb_path'"*) return ;; esac
+	if [ "$list" = "@as []" ]; then list="['$kb_path']"; else list="${list%]}, '$kb_path']"; fi
+	gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "$list"
+}
+add_shortcut ghostty Ghostty ghostty '<Super>Return'
+add_shortcut flameshot 'Flameshot screenshot' 'flameshot gui' '<Control><Shift>Print'
+
 step "desktop, dock, touchpad..."
 gsettings set org.gnome.shell.extensions.ding show-home false
 gsettings set org.gnome.shell.extensions.ding show-trash false
@@ -194,11 +210,14 @@ for theme in "$REPO_DIR"/themes/flat-remix/Flat-Remix-GTK-*; do
 done
 THEME=Flat-Remix-GTK-Red-Light
 gsettings set org.gnome.desktop.interface gtk-theme "$THEME"
-# nautilus and the other gtk4/libadwaita apps ignore gtk-theme: they read ~/.config/gtk-4.0
-# and the accent color (red/blue matches the theme, use color-scheme prefer-dark for darkest)
+# nautilus and the other gtk4/libadwaita apps ignore gtk-theme, so link the theme's full gtk4
+# stylesheet into ~/.config/gtk-4.0 (same as odziom91/libadwaita-theme-changer); the accent
+# color covers what's left (red/blue matches the theme, color-scheme prefer-dark for darkest)
 mkdir -p "$HOME/.config/gtk-4.0"
-rm -rf "$HOME/.config/gtk-4.0/assets"
-cp -a "$HOME/.themes/$THEME/libadwaita/." "$HOME/.config/gtk-4.0/"
+for f in gtk.css gtk-dark.css assets; do
+	rm -rf "$HOME/.config/gtk-4.0/$f"
+	ln -s "$HOME/.themes/$THEME/gtk-4.0/$f" "$HOME/.config/gtk-4.0/$f"
+done
 gsettings set org.gnome.desktop.interface accent-color red
 gsettings set org.gnome.desktop.interface color-scheme default
 
