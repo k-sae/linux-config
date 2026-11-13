@@ -177,15 +177,21 @@ step "desktop, dock, touchpad..."
 gsettings set org.gnome.shell.extensions.ding show-home false
 gsettings set org.gnome.shell.extensions.ding show-trash false
 gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
+# ubuntu's override makes the dock fixed (always shown, reserves space); auto-hide instead
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
 # disabled rather than deleted, re-enable with: gnome-extensions enable ubuntu-dock@ubuntu.com
 gnome-extensions disable ubuntu-dock@ubuntu.com || true
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 
 step "gnome extensions (load after re-login)..."
-# builds from extensions.gnome.org matching this gnome-shell; color-picker is installed but left off
+# builds from extensions.gnome.org matching this gnome-shell; color-picker is installed but left off.
+# disable-unredirect: with hidetopbar a maximized browser covers the whole monitor, gnome puts it on
+# a direct-scanout plane and skips painting the dock (dash-to-dock only guards true fullscreen),
+# so the dock flashes over brave/firefox
 GNOME_VER="$(gnome-shell --version | grep -oE '[0-9]+' | head -1)"
 EXTENSIONS="blur-my-shell@aunetx caffeine@patapon.info color-picker@tuberry dash-to-dock@micxgx.gmail.com
-	hidetopbar@mathieu.bidon.ca rounded-window-corners@fxgn user-theme@gnome-shell-extensions.gcampax.github.com"
+	hidetopbar@mathieu.bidon.ca rounded-window-corners@fxgn user-theme@gnome-shell-extensions.gcampax.github.com
+	disable-unredirect@exeos"
 EXT_TMP="$(mktemp -d)"
 for uuid in $EXTENSIONS; do
 	if [ -d "$HOME/.local/share/gnome-shell/extensions/$uuid" ]; then continue; fi
